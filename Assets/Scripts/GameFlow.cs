@@ -21,10 +21,30 @@ public class GameFlow : MonoBehaviour
     bool teleport_ready = false;
     bool gameStarted = false;
     public Transform bigShip;
+    public GameObject garbagePrefab;
 
     private delegate void OnTeleport(Vector3 pos);
     private static OnTeleport onTeleport;
 
+    float spawnCooldown = 0f;
+
+    float _garbageSpawn = 1f;
+    float _lightEnemySpawn = 2.5f;
+    float _commetSpawn = 4f;
+    float _2hpEnemySpawn = 4.5f;
+    float _berserkEnemySpawn = 20f;
+    float _highBerserkEnemySpawn = 50f;
+    float _miniBossSpawn = 120f;
+    float _bossSpawn = 300f;
+
+    float _garbageCD = 0;
+    float _lightEnemyCD = 0;
+    float _commetCD = 0;
+    float _2hpEnemyCD = 0;
+    float _berserkEnemyCD = 0;
+    float _highBerserkEnemyCD = 0;
+    float _miniBossCD = 0;
+    float _bossCD = 0;
 
     private void Awake()
     {
@@ -48,11 +68,20 @@ public class GameFlow : MonoBehaviour
     {
         if (!gameStarted)
         {
-            bigShip.Translate(new Vector3(0, -0.05f, 0) * gms._gameSpeed);
+            bigShip.Translate(new Vector3(0, -0.01f, 0) * gms._gameSpeed);
             if (bigShip.position.y < -11)
             {
                 Destroy(bigShip.gameObject);
                 gameStarted = true;
+                StartCoroutine("StartShooting");
+            }
+        } else
+        {
+            _garbageCD += Time.deltaTime;
+            if (_garbageCD > _garbageSpawn)
+            {
+                _garbageCD = 0;
+                SpawnGarbage();
             }
         }
         if(tp_cooldown > tp_max_cooldown && gameStarted)
@@ -115,10 +144,7 @@ public class GameFlow : MonoBehaviour
                         StartCoroutine(TeleportOnCooldown(slider_txt.color));
                         break;
                 }
-                
             }
-            
-            
         }
     }
 
@@ -156,5 +182,10 @@ public class GameFlow : MonoBehaviour
         slider_txt.color = new Color(1, 0, 0);
         yield return new WaitForSecondsRealtime(0.1f);
         slider_txt.color = _color;
+    }
+    void SpawnGarbage()
+    {
+        float _rnd = Random.Range(-2.75f, 2.75f);
+        Instantiate(garbagePrefab, new Vector3(_rnd, 4.9f, -1), Quaternion.identity);
     }
 }
