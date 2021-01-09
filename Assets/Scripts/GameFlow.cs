@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameFlow : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class GameFlow : MonoBehaviour
     SpriteRenderer TPhint_sprite;
     Transform playerTransform;
     Camera mainCamera;
+    public Slider slider_cooldown;
+    public Text slider_txt;
     float tp_max_cooldown;
     float tp_cooldown = 0f;
     int score = 0;
@@ -44,9 +47,12 @@ public class GameFlow : MonoBehaviour
         if(tp_cooldown > tp_max_cooldown)
         {
             teleport_ready = true;
+            slider_txt.text = "READY!";
+            slider_txt.color = new Color(0,1f,0);
         } else
         {
             tp_cooldown += Time.deltaTime;
+            slider_cooldown.value = tp_cooldown;
         }
         if(Input.touchCount > 0)
         {
@@ -111,5 +117,7 @@ public class GameFlow : MonoBehaviour
         playerTransform.position = _pos;
         teleport_ready = false;
         tp_cooldown = 0;
+        slider_txt.text = "WAIT!";
+        slider_txt.color = new Color(1f, 1f, 0);
     }
 }
