@@ -93,7 +93,6 @@ public class GameFlow : MonoBehaviour
                         _pos.z = -1;
                         TPhint_transform.position = _pos;
                         onTeleport(_pos);
-                        Debug.Log("TP OUT!");
                         break;
                 }
                 
@@ -113,7 +112,7 @@ public class GameFlow : MonoBehaviour
                     case TouchPhase.Ended:
                         TPhint_sprite.color = new Color(1f, 1f, 1f, 0);
                         playerTP.color = new Color(1f, 1f, 1f, 0);
-                        Debug.Log("TP in cooldown!");
+                        StartCoroutine(TeleportOnCooldown(slider_txt.color));
                         break;
                 }
                 
@@ -125,17 +124,37 @@ public class GameFlow : MonoBehaviour
 
     void StartTeleport(Vector3 _pos)
     {
-        TPhint_sprite.color = new Color(1f, 1f, 1f, 0);
+        StartCoroutine(TeleportAnimation(_pos));
+    }
+    IEnumerator TeleportAnimation(Vector3 _pos)
+    {
         TPhint_transform.position = _pos;
+        TPhint_sprite.sprite = Resources.Load<Sprite>("Images/Teleportation2");
+        playerTP.sprite = Resources.Load<Sprite>("Images/Teleportation4");
+        yield return new WaitForFixedUpdate();
+        TPhint_sprite.sprite = Resources.Load<Sprite>("Images/Teleportation3");
+        playerTP.sprite = Resources.Load<Sprite>("Images/Teleportation3");
+        yield return new WaitForFixedUpdate();
+        playerTP.sprite = Resources.Load<Sprite>("Images/Teleportation2");
+        yield return new WaitForFixedUpdate();
+        TPhint_sprite.sprite = Resources.Load<Sprite>("Images/Teleportation1");
+        playerTP.sprite = Resources.Load<Sprite>("Images/Teleportation1");
         playerTransform.position = _pos;
         teleport_ready = false;
         playerTP.color = new Color(1f, 1f, 1f, 0);
+        TPhint_sprite.color = new Color(1f, 1f, 1f, 0);
         tp_cooldown = 0;
         slider_txt.text = "WAIT!";
         slider_txt.color = new Color(1f, 1f, 0);
     }
-    IEnumerator TeleportAnimation()
+    IEnumerator TeleportOnCooldown(Color _color)
     {
-        yield return new WaitForFixedUpdate();
+        slider_txt.color = new Color(1, 0, 0);
+        yield return new WaitForSecondsRealtime(0.1f);
+        slider_txt.color = _color;
+        yield return new WaitForSecondsRealtime(0.1f);
+        slider_txt.color = new Color(1, 0, 0);
+        yield return new WaitForSecondsRealtime(0.1f);
+        slider_txt.color = _color;
     }
 }
