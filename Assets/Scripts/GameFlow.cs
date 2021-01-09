@@ -22,16 +22,20 @@ public class GameFlow : MonoBehaviour
     bool gameStarted = false;
     public Transform bigShip;
     public GameObject garbagePrefab;
+    public GameObject lowEnemyPrefab;
+    public GameObject commetPrefab;
+    public GameObject bigEnemyPrefab;
+    public GameObject berserkEnemyPrefab;
 
     private delegate void OnTeleport(Vector3 pos);
     private static OnTeleport onTeleport;
 
     float spawnCooldown = 0f;
 
-    float _garbageSpawn = 1f;
+    float _garbageSpawn = 1.5f;
     float _lightEnemySpawn = 2.5f;
     float _commetSpawn = 4f;
-    float _2hpEnemySpawn = 4.5f;
+    float _2hpEnemySpawn = 5.5f;
     float _berserkEnemySpawn = 20f;
     float _highBerserkEnemySpawn = 50f;
     float _miniBossSpawn = 120f;
@@ -73,7 +77,7 @@ public class GameFlow : MonoBehaviour
             {
                 Destroy(bigShip.gameObject);
                 gameStarted = true;
-                StartCoroutine("StartShooting");
+                //StartCoroutine("StartShooting");
             }
         } else
         {
@@ -82,6 +86,30 @@ public class GameFlow : MonoBehaviour
             {
                 _garbageCD = 0;
                 SpawnGarbage();
+            }
+            _lightEnemyCD += Time.deltaTime;
+            if(_lightEnemyCD > _lightEnemySpawn)
+            {
+                _lightEnemyCD = 0;
+                SpawnLowEnemy();
+            }
+            _commetCD += Time.deltaTime;
+            if (_commetCD > _commetSpawn)
+            {
+                _commetCD = 0;
+                SpawnCommet();
+            }
+            _2hpEnemyCD += Time.deltaTime;
+            if (_2hpEnemyCD > _2hpEnemySpawn)
+            {
+                _2hpEnemyCD = 0;
+                SpawnBigEnemy();
+            }
+            _berserkEnemyCD += Time.deltaTime;
+            if (_berserkEnemyCD > _berserkEnemySpawn)
+            {
+                _berserkEnemyCD = 0;
+                SpawnBerserkEnemy();
             }
         }
         if(tp_cooldown > tp_max_cooldown && gameStarted)
@@ -186,6 +214,26 @@ public class GameFlow : MonoBehaviour
     void SpawnGarbage()
     {
         float _rnd = Random.Range(-2.75f, 2.75f);
-        Instantiate(garbagePrefab, new Vector3(_rnd, 4.9f, -1), Quaternion.identity);
+        Instantiate(garbagePrefab, new Vector3(_rnd, 4.9f, -1.4f), Quaternion.identity);
+    }
+    void SpawnLowEnemy()
+    {
+        float _rnd = Random.Range(-2.75f, 2.75f);
+        Instantiate(lowEnemyPrefab, new Vector3(_rnd, 4.75f, -1.4f), Quaternion.identity);
+    }
+    void SpawnCommet()
+    {
+        float _rnd = Random.Range(-2.75f, 2.75f);
+        Instantiate(commetPrefab, new Vector3(_rnd, 4.8f, -1.4f), Quaternion.identity);
+    }
+    void SpawnBigEnemy()
+    {
+        float _rnd = Random.Range(-2.5f, 2.5f);
+        Instantiate(bigEnemyPrefab, new Vector3(_rnd, 4.75f, -1.4f), Quaternion.identity);
+    }
+    void SpawnBerserkEnemy()
+    {
+        float _rnd = Random.Range(-2.5f, 2.5f);
+        Instantiate(berserkEnemyPrefab, new Vector3(_rnd, 4.75f, -1.4f), Quaternion.identity);
     }
 }
