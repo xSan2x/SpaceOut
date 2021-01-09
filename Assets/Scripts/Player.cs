@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameSettings : MonoBehaviour
+public class Player : MonoBehaviour
 {
-    public static GameSettings instance = null;
-    public float _gameSpeed;
-    public float _startCooldown;
-
+    public static Player instance;
+    // Start is called before the first frame update
     void Awake()
     {
         if (instance == null)
@@ -19,9 +17,11 @@ public class GameSettings : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        _gameSpeed = 1f;
-        _startCooldown = 1f;
     }
 
-    
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
 }
