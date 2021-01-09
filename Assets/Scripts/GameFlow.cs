@@ -19,6 +19,8 @@ public class GameFlow : MonoBehaviour
     float tp_cooldown = 0f;
     int score = 0;
     bool teleport_ready = false;
+    bool gameStarted = false;
+    public Transform bigShip;
 
     private delegate void OnTeleport(Vector3 pos);
     private static OnTeleport onTeleport;
@@ -44,13 +46,23 @@ public class GameFlow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(tp_cooldown > tp_max_cooldown)
+        if (!gameStarted)
+        {
+            bigShip.Translate(new Vector3(0, -0.05f, 0) * gms._gameSpeed);
+            if (bigShip.position.y < -11)
+            {
+                Destroy(bigShip.gameObject);
+                gameStarted = true;
+            }
+        }
+        if(tp_cooldown > tp_max_cooldown && gameStarted)
         {
             teleport_ready = true;
             slider_txt.text = "READY!";
             slider_txt.color = new Color(0,1f,0);
         } else
         {
+            if (gameStarted)
             tp_cooldown += Time.deltaTime;
             slider_cooldown.value = tp_cooldown;
         }
@@ -100,6 +112,7 @@ public class GameFlow : MonoBehaviour
                         break;
                     case TouchPhase.Ended:
                         TPhint_sprite.color = new Color(1f, 1f, 1f, 0);
+                        playerTP.color = new Color(1f, 1f, 1f, 0);
                         Debug.Log("TP in cooldown!");
                         break;
                 }
@@ -112,12 +125,17 @@ public class GameFlow : MonoBehaviour
 
     void StartTeleport(Vector3 _pos)
     {
-        TPhint_sprite.color = new Color(1f, 1f, 1f, 1f);
+        TPhint_sprite.color = new Color(1f, 1f, 1f, 0);
         TPhint_transform.position = _pos;
         playerTransform.position = _pos;
         teleport_ready = false;
+        playerTP.color = new Color(1f, 1f, 1f, 0);
         tp_cooldown = 0;
         slider_txt.text = "WAIT!";
         slider_txt.color = new Color(1f, 1f, 0);
+    }
+    IEnumerator TeleportAnimation()
+    {
+        yield return new WaitForFixedUpdate();
     }
 }
