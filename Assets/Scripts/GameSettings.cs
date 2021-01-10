@@ -23,5 +23,4 @@ public class GameSettings : MonoBehaviour
         _startCooldown = 1f;
     }
 
-    
 }

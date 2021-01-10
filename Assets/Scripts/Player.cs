@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public static Player instance;
+    GameFlow gms;
     int shotsCount = 1;
     float shotCD = 0;
     float shotSpawn = 1f;
@@ -25,7 +26,10 @@ public class Player : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    private void Start()
+    {
+        gms = GameFlow.instance;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -68,6 +72,27 @@ public class Player : MonoBehaviour
                 }
                 Instantiate(shotPrefab, _playerPos, Quaternion.identity);
             }
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        switch (collision.gameObject.tag)
+        {
+            case "Shot":
+                HP--;
+                break;
+            case "Garbage":
+                HP--;
+                break;
+            case "Commet":
+                HP--;
+                break;
+            default:
+                break;
+        }
+        if (HP < 1)
+        {
+            gms.GameOver();
         }
     }
 }

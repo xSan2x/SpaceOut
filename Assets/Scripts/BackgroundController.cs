@@ -51,7 +51,7 @@ public class BackgroundController : MonoBehaviour
             {
                 if (_transform.position.y > -5)
                 {
-                    _transform.Translate(new Vector3(0, -0.05f, 0) * gms._gameSpeed);
+                    _transform.Translate(new Vector3(0, -0.06f, 0) * gms._gameSpeed);
                 } else
                 {
                     GameObject _gm = _transform.gameObject;

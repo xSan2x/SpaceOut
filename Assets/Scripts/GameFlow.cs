@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameFlow : MonoBehaviour
 {
+    public static GameFlow instance;
     GameSettings gms;
     Player player;
     SpriteRenderer playerTP;
@@ -32,8 +34,6 @@ public class GameFlow : MonoBehaviour
     private delegate void OnTeleport(Vector3 pos);
     private static OnTeleport onTeleport;
 
-    float spawnCooldown = 0f;
-
     float _garbageSpawn = 1.5f;
     float _lightEnemySpawn = 2.5f;
     float _commetSpawn = 4f;
@@ -52,13 +52,27 @@ public class GameFlow : MonoBehaviour
     float _miniBossCD = 0;
     float _bossCD = 0;
 
+    public Text gameScoreWindow;
+    public CanvasGroup gameOverWindow;
+    public Text scoreOverWindow;
+
     private void Awake()
     {
         onTeleport += StartTeleport;
+        if (instance == null)
+        {
+           instance = this;
+        }
+        else
+        if (instance == this)
+        {
+           Destroy(gameObject);
+        }
     }
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 1;
         gms = GameSettings.instance;
         player = Player.instance;
         playerTransform = player.transform;
@@ -259,5 +273,19 @@ public class GameFlow : MonoBehaviour
     {
         float _rnd = Random.Range(-0.5f, 0.5f);
         Instantiate(miniBossPrefab, new Vector3(_rnd, 5.2f, -1.4f), Quaternion.identity);
+    }
+
+    public void GameOver()
+    {
+        Time.timeScale = 0;
+        gameOverWindow.alpha = 1;
+        gameOverWindow.interactable = true;
+        gameOverWindow.blocksRaycasts = true;
+        scoreOverWindow.text = "Your score: " + score;
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
