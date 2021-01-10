@@ -12,7 +12,8 @@ public class LowEnemy : MonoBehaviour
     private void Start()
     {
         gms = GameSettings.instance;
-        GetComponent<Rigidbody2D>().velocity = new Vector2(0, -1 * gms._gameSpeed);
+        GetComponent<Rigidbody2D>().velocity = new Vector2(0, -5 * gms._gameSpeed);
+        StartCoroutine("Brake");
     }
     // Update is called once per frame
     void Update()
@@ -37,7 +38,13 @@ public class LowEnemy : MonoBehaviour
     {
         if(collision.gameObject.tag == "PlayerShot")
         {
+            Destroy(collision.gameObject);
             Destroy(gameObject);
         }
+    }
+    IEnumerator Brake()
+    {
+        yield return new WaitForSecondsRealtime(0.1f);
+        GetComponent<Rigidbody2D>().velocity = new Vector2(0, -1 * gms._gameSpeed);
     }
 }

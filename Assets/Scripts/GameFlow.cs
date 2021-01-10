@@ -26,6 +26,8 @@ public class GameFlow : MonoBehaviour
     public GameObject commetPrefab;
     public GameObject bigEnemyPrefab;
     public GameObject berserkEnemyPrefab;
+    public GameObject highBerserkEnemyPrefab;
+    public GameObject miniBossPrefab;
 
     private delegate void OnTeleport(Vector3 pos);
     private static OnTeleport onTeleport;
@@ -110,6 +112,18 @@ public class GameFlow : MonoBehaviour
             {
                 _berserkEnemyCD = 0;
                 SpawnBerserkEnemy();
+            }
+            _highBerserkEnemyCD += Time.deltaTime;
+            if (_highBerserkEnemyCD > _highBerserkEnemySpawn)
+            {
+                _highBerserkEnemyCD = 0;
+                SpawnHighBerserkEnemy();
+            }
+            _miniBossCD += Time.deltaTime;
+            if (_miniBossCD > _miniBossSpawn)
+            {
+                _miniBossCD = 0;
+                SpawnMiniBoss();
             }
         }
         if(tp_cooldown > tp_max_cooldown && gameStarted)
@@ -235,5 +249,15 @@ public class GameFlow : MonoBehaviour
     {
         float _rnd = Random.Range(-2.5f, 2.5f);
         Instantiate(berserkEnemyPrefab, new Vector3(_rnd, 4.75f, -1.4f), Quaternion.identity);
+    }
+    void SpawnHighBerserkEnemy()
+    {
+        float _rnd = Random.Range(-2.5f, 2.5f);
+        Instantiate(highBerserkEnemyPrefab, new Vector3(_rnd, 4.75f, -1.4f), Quaternion.identity);
+    }
+    void SpawnMiniBoss()
+    {
+        float _rnd = Random.Range(-0.5f, 0.5f);
+        Instantiate(miniBossPrefab, new Vector3(_rnd, 5.2f, -1.4f), Quaternion.identity);
     }
 }

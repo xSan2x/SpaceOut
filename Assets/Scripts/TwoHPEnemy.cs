@@ -14,7 +14,8 @@ public class TwoHPEnemy : MonoBehaviour
     void Start()
     {
         gms = GameSettings.instance;
-        GetComponent<Rigidbody2D>().velocity = new Vector2(0, -0.5f * gms._gameSpeed);
+        GetComponent<Rigidbody2D>().velocity = new Vector2(0, -5f * gms._gameSpeed);
+        StartCoroutine("Brake");
     }
 
     // Update is called once per frame
@@ -43,10 +44,16 @@ public class TwoHPEnemy : MonoBehaviour
         if (collision.gameObject.tag == "PlayerShot")
         {
             HP -= 1;
+            Destroy(collision.gameObject);
             if (HP < 1)
             {
                 Destroy(this.gameObject);
             }
         }
+    }
+    IEnumerator Brake()
+    {
+        yield return new WaitForSecondsRealtime(0.05f);
+        GetComponent<Rigidbody2D>().velocity = new Vector2(0, -0.5f * gms._gameSpeed);
     }
 }

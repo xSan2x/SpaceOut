@@ -622,6 +622,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3894ceb605567a647a9238d19c3519c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shotPrefab: {fileID: 7641431932315338416, guid: 83e5d1e6b28a8b5438a3fa24dac75282, type: 3}
 --- !u!1 &386317221
 GameObject:
   m_ObjectHideFlags: 0
@@ -3261,6 +3262,8 @@ MonoBehaviour:
   commetPrefab: {fileID: 6005855912150616842, guid: 51bdb5bae824d0343a496c3bcc2f4b7f, type: 3}
   bigEnemyPrefab: {fileID: 1403590989471544840, guid: c502de2ba0068fb43ac116e0d525c6e3, type: 3}
   berserkEnemyPrefab: {fileID: 7609323705828775326, guid: 87db8d0cb0f18234ebdf7c8f266ec5c7, type: 3}
+  highBerserkEnemyPrefab: {fileID: 2540586871630947479, guid: 1cd1af88b4fa5f441b79722a3ba5e2c9, type: 3}
+  miniBossPrefab: {fileID: 6748681419779839606, guid: b7987d808d7fdd049aca8de5562bcdca, type: 3}
 --- !u!4 &1619903937
 Transform:
   m_ObjectHideFlags: 0
